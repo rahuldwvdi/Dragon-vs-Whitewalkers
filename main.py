@@ -3,22 +3,29 @@ import random
 import math
 from pygame import mixer
 
+#initializing pygame
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
 
+#setting screen & loading background
+screen = pygame.display.set_mode((800, 600))
 background = pygame.image.load("G:\CS\gameoffire\background.png")
+
+#setting caption & load images
 pygame.display.set_caption("Game of Fire")
 icon = pygame.image.load("G:\CS\gameoffire\fire.png")
 pygame.display.set_icon(icon)
 
+#some music
 mixer.music.load("G:\CS\gameoffire\backgroundgof.mp3")
 mixer.music.play(-1)
 
+#loading dragon image
 dragonimg = pygame.image.load("G:\CS\gameoffire\dragon.png")
 dragonx = 360
 dragony = 510
 dragonx_change = 0
 
+#fire image
 fireimg = pygame.image.load('G:\CS\gameoffire\fire.png')
 firex = 0
 firey = 510
@@ -26,6 +33,7 @@ firex_change = 0
 firey_change = 5
 attack_state = "ready"
 
+#generating enemies (here: white walkers)
 enemyimg = []
 enemyx = []
 enemyy =[]
@@ -39,38 +47,33 @@ for i in range(no_of_enemies):
     enemyx_change.append(2)
     enemyy_change.append(30)
 
+#intializing scoreboard
 score_value = 0
 font = pygame.font.Font('starjedi.ttf', 32)
 textx = 10
 texty = 10
 
+#setting up font for scoreboard
 over_font = pygame.font.Font('starjedi.ttf', 64)
 
 def gameover():
     gameover_text = over_font.render("ok", True, (240, 128, 128))
     screen.blit(gameover_text,(200,250))
 
-
-
-
 def show_score(x, y):
     score = font.render("killed: " + str(score_value), True, (240, 128, 128))
     screen.blit(score, (x, y))
 
-
 def dragon(x, y):
     screen.blit(dragonimg, (x, y))
 
-
 def enemy(x, y, i):
     screen.blit(enemyimg[i], (x, y))
-
 
 def attack(x, y):
     global attack_state
     attack_state = "fire"
     screen.blit(fireimg, (x + 16, y + 10))
-
 
 def iscollision(enemyx, enemyy, firex, firey):
     distance = math.sqrt((math.pow((enemyx - firex), 2)) + math.pow((enemyy - firey), 2))
@@ -79,18 +82,17 @@ def iscollision(enemyx, enemyy, firex, firey):
     else:
         return False
 
-
-# game loop
+#game loop
 run = True
 while run:
-    # adding background color
+    #adding background color
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
-        # moving boy along x axis
+        #moving dragon along x axis
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 dragonx_change = -2
